@@ -15,6 +15,7 @@
 
 Если не создан том для postgres:
 * sudo docker volume create --name=pg-data
+
 ну или можно поправить docker-compose.yaml, убрав строчку "external: true" в параметрах тома
 
 * sudo docker-compose build
