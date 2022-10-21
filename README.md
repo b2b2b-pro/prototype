@@ -14,22 +14,22 @@
 **Для запуска:**
 
 Если не создан том для postgres:
-> sudo docker volume create --name=pg-data
+* sudo docker volume create --name=pg-data
 ну или можно поправить docker-compose.yaml, убрав строчку "external: true" в параметрах тома
 
-> sudo docker-compose build
-> sudo docker-compose up -d
+* sudo docker-compose build
+* sudo docker-compose up -d
 
 Потом можно постучаться на 8088 по http
-> curl -X POST -d '{"entity_inn":"1000", "entity_kpp":"1000", "short_name":"тест"}' http://localhost:8088/entity
-> curl http://localhost:8088/entity
+* curl -X POST -d '{"entity_inn":"1000", "entity_kpp":"1000", "short_name":"тест"}' http://localhost:8088/entity
+* curl http://localhost:8088/entity
 
 Или запустить xml2http, передав ей на вход имя xml-файла, который предусмотренно оставлен
-> cd xml2repo
-> go run cmd/app/main.go contract_1241101171822000013_74728698.xml
+* cd xml2repo
+* go run cmd/app/main.go contract_1241101171822000013_74728698.xml
 
 Можно убедиться, что данные попали в базу:
-> curl http://localhost:8088/entity
+* curl http://localhost:8088/entity
 
 
 
