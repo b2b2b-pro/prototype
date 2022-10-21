@@ -1,0 +1,17 @@
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'pass'
+      POSTGRES_DB: 'b2b2b'
+    ports:
+      - 5432:5432
+
+volumes:
+  pg-data:
+    external: true

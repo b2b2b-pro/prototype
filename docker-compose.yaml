@@ -1,0 +1,57 @@
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'pass'
+      POSTGRES_DB: 'b2b2b'
+    networks:
+      - dbnet
+    ports:
+      - 5432:5432
+
+  repository:
+    build: ./repository
+    container_name: repository
+    image: repository
+    environment:
+      PG_PORT: '5432'
+      PG_HOST: 'postgres'
+      DB_NAME: 'b2b2b'
+      DB_USER: 'user'
+      DB_Pass: 'pass'
+      RPC_PORT: '50051'
+    networks:
+      - dbnet
+      - grpcnet
+    ports:
+      - 50051:50051
+    depends_on:
+      - postgres
+
+  http2repo:
+    build: ./http2repo
+    container_name: http2repo
+    image: http2repo
+    environment:
+      RPC_HOST: 'repository'
+      RPC_PORT: '50051'
+    networks:
+      - dbnet
+      - grpcnet
+    ports:
+      - 8088:8088
+    depends_on:
+      - repository
+
+volumes:
+  pg-data:
+    external: true
+
+networks:
+  dbnet:
+  grpcnet:
