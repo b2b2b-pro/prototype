@@ -3,7 +3,7 @@ module github.com/b2b2b-pro/prototype/repository
 go 1.18
 
 require (
-	github.com/b2b2b-pro/lib v0.0.6
+	github.com/b2b2b-pro/lib v0.0.7
 	github.com/jackc/pgx/v4 v4.17.2
 	go.uber.org/zap v1.23.0
 )

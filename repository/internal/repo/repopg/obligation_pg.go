@@ -7,7 +7,8 @@ import (
 	"go.uber.org/zap"
 )
 
-func (pg *RepoPg) CreateObligation(o object.Obligation) (int, error) {
+// TODO проверить токен
+func (pg *RepoPg) CreateObligation(tkn string, o object.Obligation) (int, error) {
 	var err error
 
 	zap.S().Debug("postgres CreateObligation: ", o, "\n")
@@ -37,7 +38,8 @@ func (pg *RepoPg) CreateObligation(o object.Obligation) (int, error) {
 	return o.ID, err
 }
 
-func (pg *RepoPg) ListObligation() ([]object.Obligation, error) {
+// TODO проверить токен
+func (pg *RepoPg) ListObligation(tkn string) ([]object.Obligation, error) {
 	zap.S().Debug("postgres ListObligation\n")
 
 	rows, err := pg.db.Pool.Query(context.Background(), "SELECT * FROM obligation;")

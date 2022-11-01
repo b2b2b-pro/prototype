@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/oauth"
 
 	"github.com/b2b2b-pro/lib/repo_client"
 	"go.uber.org/zap"
@@ -17,10 +18,14 @@ import (
 type WebRouter struct {
 	R    *chi.Mux
 	repo *repo_client.RepoGRPC
+	ba   *oauth.BearerAuthentication
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Прювет Волку!\n")
+func (wr *WebRouter) hello(w http.ResponseWriter, r *http.Request) {
+	t := r.Header.Get("Authorization")
+	ctx := r.Context()
+	fmt.Fprintf(w, "Прювет Волку!\n%v\n%v\n%v\n", t, ctx.Value(oauth.CredentialContext), ctx.Value(oauth.AccessTokenContext))
+
 }
 
 func New(db *repo_client.RepoGRPC) *WebRouter {
@@ -31,7 +36,13 @@ func New(db *repo_client.RepoGRPC) *WebRouter {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Get("/", hello)
+	wr.ba = oauth.NewBearerAuthentication(
+		"mySecretKey-10101",
+		nil)
+
+	r.Use(wr.ba.Authorize)
+
+	r.Get("/", wr.hello)
 	r.Mount("/obligation", wr.obligationRouter())
 	r.Mount("/entity", wr.entityRouter())
 	wr.R = r

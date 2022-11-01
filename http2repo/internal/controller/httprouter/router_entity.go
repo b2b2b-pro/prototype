@@ -6,6 +6,7 @@ import (
 
 	"github.com/b2b2b-pro/lib/object"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/oauth"
 	"go.uber.org/zap"
 )
 
@@ -26,7 +27,11 @@ func (wr *WebRouter) entityRouter() chi.Router {
 func (wr *WebRouter) listEntity(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Список фирм:\n")
 
-	tmp, err := wr.repo.ListEntity()
+	ctx := r.Context()
+	tmp, err := wr.repo.ListEntity(ctx.Value(oauth.AccessTokenContext).(string))
+	/*
+		cannot use ctx.Value(oauth.AccessTokenContext) (value of type any) as string value in argument to wr.repo.ListEntity: need type assertion
+	*/
 	if err != nil {
 		zap.S().Error("Repo ListEntity error: ", err, "\n")
 	}
@@ -48,7 +53,8 @@ func (wr *WebRouter) createEntity(w http.ResponseWriter, r *http.Request) {
 
 	zap.S().Info("createEntity получил ", frm, " от ParseEntity\n")
 
-	frm.ID, err = wr.repo.CreateEntity(*frm)
+	ctx := r.Context()
+	frm.ID, err = wr.repo.CreateEntity(ctx.Value(oauth.AccessTokenContext).(string), *frm)
 	if err != nil {
 		zap.S().Error("wr.db.Create error: ", err, "\n")
 	}

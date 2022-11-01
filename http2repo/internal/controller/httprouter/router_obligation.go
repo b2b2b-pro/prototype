@@ -6,6 +6,7 @@ import (
 
 	"github.com/b2b2b-pro/lib/object"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/oauth"
 	"go.uber.org/zap"
 )
 
@@ -26,7 +27,8 @@ func (wr *WebRouter) obligationRouter() chi.Router {
 func (wr *WebRouter) listObligation(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Список требований:\n")
 
-	tmp, err := wr.repo.ListObligation()
+	ctx := r.Context()
+	tmp, err := wr.repo.ListObligation(ctx.Value(oauth.AccessTokenContext).(string))
 	if err != nil {
 		zap.S().Error("Repo ListObligation error: ", err, "\n")
 	}
@@ -49,7 +51,8 @@ func (wr *WebRouter) createObligation(w http.ResponseWriter, r *http.Request) {
 
 	zap.S().Debug("CreateObligation получил ", l, " от ParseObligation\n")
 
-	l.ID, err = wr.repo.CreateObligation(*l)
+	ctx := r.Context()
+	l.ID, err = wr.repo.CreateObligation(ctx.Value(oauth.AccessTokenContext).(string), *l)
 	if err != nil {
 		zap.S().Error("wr.db.Create error: ", err, "\n")
 	}
