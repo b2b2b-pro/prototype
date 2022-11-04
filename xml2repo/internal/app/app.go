@@ -22,7 +22,7 @@ func Run(cfg *config.Config, files []string) {
 	}
 	defer rp.Stop()
 
-	xp := fz44.NewParser(rp)
+	xp := fz44.NewParser(cfg.Tkn, rp)
 
 	for _, x := range files {
 		err = xp.ParseXML(x)

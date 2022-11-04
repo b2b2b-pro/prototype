@@ -13,8 +13,14 @@ import (
 )
 
 func main() {
+	// временно, для дебага
+	var f []string
+
 	if len(os.Args) < 2 {
-		log.Fatal("Usage xml2repo file\n")
+		// log.Fatal("Usage xml2repo file\n")
+		f = append(f, "../../contract_1241101171822000013_74728698.xml")
+	} else {
+		f = os.Args[1:]
 	}
 
 	cfg, err := config.New()
@@ -30,5 +36,5 @@ func main() {
 
 	zap.ReplaceGlobals(logger)
 
-	app.Run(cfg, os.Args[1:])
+	app.Run(cfg, f)
 }

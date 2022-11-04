@@ -5,6 +5,13 @@
 *.so
 *.dylib
 __debug_bin
+auth/auth
+http2repo/http2repo
+xml2repo/xml2repo
+repository/repository
+
+# special auth
+auth.special/
 
 # Test binary, built with `go test -c`
 *.test

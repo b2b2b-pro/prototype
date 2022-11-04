@@ -36,7 +36,7 @@ func (wr *WebRouter) listObligation(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%v\n", tmp)
 }
 
-// curl -X POST -d '{"debtor_id":3,"creditor_id":4, "cost": 20.1, "origin_id":1, "payment_date":"2020-10-10"}' http://localhost:8088/obligation
+// curl -X POST -d '{"debtor_id":3,"creditor_id":4, "cost": 20, "origin_id":1, "payment_date":"2020-10-10"}' http://localhost:8088/obligation
 // TODO не доделана передача в gRPC
 func (wr *WebRouter) createObligation(w http.ResponseWriter, r *http.Request) {
 	var err error

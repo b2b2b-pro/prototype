@@ -37,7 +37,7 @@ func New(db *repo_client.RepoGRPC) *WebRouter {
 	r.Use(middleware.Recoverer)
 
 	wr.ba = oauth.NewBearerAuthentication(
-		"mySecretKey-10101",
+		"b2b2bSecretKey",
 		nil)
 
 	r.Use(wr.ba.Authorize)

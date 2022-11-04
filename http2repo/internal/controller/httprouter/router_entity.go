@@ -29,9 +29,6 @@ func (wr *WebRouter) listEntity(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 	tmp, err := wr.repo.ListEntity(ctx.Value(oauth.AccessTokenContext).(string))
-	/*
-		cannot use ctx.Value(oauth.AccessTokenContext) (value of type any) as string value in argument to wr.repo.ListEntity: need type assertion
-	*/
 	if err != nil {
 		zap.S().Error("Repo ListEntity error: ", err, "\n")
 	}

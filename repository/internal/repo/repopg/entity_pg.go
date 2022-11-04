@@ -14,6 +14,7 @@ func (pg *RepoPg) CreateEntity(tkn string, frm object.Entity) (int, error) {
 	zap.S().Debug("postgres CreateEntity: ", frm, "\n")
 	var row1, row2 pgx.Rows
 	var err error
+
 	qselect := "SELECT id FROM entity WHERE inn = $1 AND kpp = $2;"
 	row1, err = pg.db.Pool.Query(context.Background(), qselect, frm.INN, frm.KPP)
 	if err != nil {

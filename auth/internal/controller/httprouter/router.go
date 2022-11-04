@@ -41,7 +41,7 @@ func New() *WebRouter {
 
 func registerAPI(r *chi.Mux) {
 	s := oauth.NewBearerServer(
-		"mySecretKey-10101",
+		"b2b2bSecretKey",
 		time.Second*120,
 		&client.Verifier{},
 		nil)
