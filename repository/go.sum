@@ -1,8 +1,8 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
-github.com/b2b2b-pro/lib v0.0.9 h1:EsiccPAbBwn+E7MiLSIDgFeP4HazLruEOD6RpVAa/aY=
-github.com/b2b2b-pro/lib v0.0.9/go.mod h1:jKSPLDJJXQZoE5DON3MkWwjHoF6XPuDTf0cDfibQsiM=
+github.com/b2b2b-pro/lib v0.0.10 h1:R3pppxr47d9M6hNy8LyKseFsVOx9LU5k3VFoB1Ux1YY=
+github.com/b2b2b-pro/lib v0.0.10/go.mod h1:jKSPLDJJXQZoE5DON3MkWwjHoF6XPuDTf0cDfibQsiM=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
