@@ -7,7 +7,8 @@ import (
 	"go.uber.org/zap"
 )
 
-func (pg *RepoPg) CreateOrigin(orn object.Origin) (int, error) {
+// TODO проверить токен
+func (pg *RepoPg) CreateOrigin(tkn string, orn object.Origin) (int, error) {
 	var err error
 	query := "INSERT INTO origin (description) VALUES ($1) RETURNING (id);"
 

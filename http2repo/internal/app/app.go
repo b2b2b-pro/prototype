@@ -28,6 +28,12 @@ func Run(cfg *config.Config) {
 
 	zap.S().Debugf("Run. Config: %v\n", cfg)
 
+	/*
+		cannot use &cfg.ConfigRPC (value of type *"github.com/b2b2b-pro/lib/repo_client".ConfigRPC) as
+		*"github.com/b2b2b-pro/prototype/http2repo/internal/controller/repo_client".ConfigRPC value in argument to repo_client.New
+		cannot use rp (variable of type *"github.com/b2b2b-pro/prototype/http2repo/internal/controller/repo_client".RepoGRPC)
+		as *"github.com/b2b2b-pro/lib/repo_client".RepoGRPC value in argument to httprouter.New
+	*/
 	rp, err := repo_client.New(&cfg.ConfigRPC)
 	if err != nil {
 		zap.S().Debugf("GRPC to Repository initialization error: ", err, "\n")

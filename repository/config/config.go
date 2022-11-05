@@ -14,6 +14,9 @@ import (
 	"go.uber.org/zap"
 )
 
+/*
+github.com/b2b2b-pro/prototype/repository
+*/
 const (
 	FlagPGHost = "hostPG"    // Имя флага для хоста СУБД
 	EnvPGHost  = "PG_HOST"   // Название переменной среды, в которой ищем хост, на котором ищем СУБД

@@ -14,12 +14,14 @@ import (
 	"go.uber.org/zap"
 )
 
+/*
 type TypeRepo int
 
 const (
 	Mem TypeRepo = iota
 	PG
 )
+*/
 
 const (
 	FlagRPCHost = "hostRPC"   // Имя флага для хоста gRPC
@@ -34,11 +36,16 @@ const (
 // Config - конфгурация приложения
 type Config struct {
 	ConfigRPC repo_client.ConfigRPC
+	Tkn       string
 }
 
 // config.New() возвращает ссылку на конфиг и ошибку-результат инициализации конфига
 func New() (*Config, error) {
-	cfg := &Config{}
+
+	// TODO пока прибил гвоздями долгий login admin'а
+	cfg := &Config{
+		Tkn: "zlt/beUeYzGOevstEzcuZIvimiNDwuZpTRPBw/LpPan6WySdHeAol/uP4pJY0M/QinILP5AzrPhKGVQT1diOBij4pMXm9iVXmc1HJQIeLcjBNFQiJZokYH1nFHk4n2/4br3nmUqE6zK9kJTO8kCLOb1TJMv6LRQR2sk2QCZVth9ZUE9d2pB2ckMc/+xBNY8XwnkGd/hvNiNJjny79mwcF8cjECbaQ8P53mDLtS99qp8akk6mDsRg21k0hmmC+2Z4XOOCFjqX7B0V2/5byfaXoLS3AqnjkJ87nIaemQk5wrh0aDqMtffU4+1yqVuQhpLvAxa8UWdF6Npv0oZsVxIb4SeL/AbZ/MXZWJRtR4OOXCrfp/fjh2VGyOOo2IE9esw8j23RhVLdBwRRjKpWoA==",
+	}
 	var err error
 	var ok bool
 

@@ -1,2 +1,2 @@
 build:
-	go build -a -o b2b2b ./cmd/app
+	go build -a -o xml2repo ./cmd/app

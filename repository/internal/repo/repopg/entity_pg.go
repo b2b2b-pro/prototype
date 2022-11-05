@@ -9,11 +9,12 @@ import (
 )
 
 // CRUDL для фирм (postgres)
-
-func (pg *RepoPg) CreateEntity(frm object.Entity) (int, error) {
+// TODO проверить токен
+func (pg *RepoPg) CreateEntity(tkn string, frm object.Entity) (int, error) {
 	zap.S().Debug("postgres CreateEntity: ", frm, "\n")
 	var row1, row2 pgx.Rows
 	var err error
+
 	qselect := "SELECT id FROM entity WHERE inn = $1 AND kpp = $2;"
 	row1, err = pg.db.Pool.Query(context.Background(), qselect, frm.INN, frm.KPP)
 	if err != nil {
@@ -60,7 +61,8 @@ func (pg *RepoPg) CreateEntity(frm object.Entity) (int, error) {
 	return frm.ID, err
 }
 
-func (pg *RepoPg) ListEntity() ([]object.Entity, error) {
+// TODO проверить токен
+func (pg *RepoPg) ListEntity(tkn string) ([]object.Entity, error) {
 	zap.S().Debug("postgres ListEntity\n")
 
 	query := "SELECT entity.id, entity.inn, entity.kpp, entity.shortname, entity.fullname FROM entity;"

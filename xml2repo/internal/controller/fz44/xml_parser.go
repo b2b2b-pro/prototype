@@ -15,11 +15,14 @@ import (
 type Parser struct {
 	repo    *repo_client.RepoGRPC
 	decoder *xml.Decoder
+	tkn     string
 }
 
-func NewParser(db *repo_client.RepoGRPC) *Parser {
+func NewParser(tkn string, db *repo_client.RepoGRPC) *Parser {
 	zap.S().Debug("Configuring XML Parser.")
-	xp := &Parser{}
+	xp := &Parser{
+		tkn: tkn,
+	}
 	xp.repo = db
 	return xp
 }
@@ -33,7 +36,7 @@ func (xp *Parser) parseOrigin(tc xml.StartElement) object.Origin {
 	}
 	zap.S().Debugf("ссылка на госзакупки: %v\n", orn.Description)
 	// создать origin, получить его ID и использовать для obligation
-	orn.ID, err = xp.repo.CreateOrigin(orn)
+	orn.ID, err = xp.repo.CreateOrigin(xp.tkn, orn)
 	if err != nil {
 		zap.S().Debugf("xp.repo.CreateOrigin(orn) error: %v", err)
 	}
@@ -74,7 +77,7 @@ fl:
 		}
 	}
 	// создать entity
-	en.ID, err = xp.repo.CreateEntity(en)
+	en.ID, err = xp.repo.CreateEntity(xp.tkn, en)
 	if err != nil {
 		zap.S().Errorf("repo.CreateEntity error: %v\n", err)
 	}
@@ -85,6 +88,8 @@ func (xp *Parser) parsePayment(end string) object.Obligation {
 	var ob object.Obligation
 	var err error
 	var m, y int
+	var mf float64
+
 fl:
 	for {
 		var d xml.Token
@@ -104,7 +109,12 @@ fl:
 			case "paymentyear":
 				xp.decoder.DecodeElement(&y, &td)
 			case "paymentsumrur":
-				xp.decoder.DecodeElement(&ob.Cost, &td)
+				// xp.decoder.DecodeElement(&ob.Cost, &td)
+				err = xp.decoder.DecodeElement(&mf, &td)
+				if err != nil {
+					zap.S().Debugf("decoder.DecodeElement paymentsumrur error: %v\n", err)
+				}
+				ob.Cost = int64(mf * 100.0)
 			}
 		case xml.EndElement:
 			if td.Name.Local == end {
@@ -135,6 +145,8 @@ func (xp *Parser) ParseXML(fname string) error {
 	// хотя, возможно, несколько платежей обусловлены технологией, поэтому может быть их не надо учитывать
 	var obPay []object.Obligation
 	var obPrc object.Obligation
+	var mf float64
+
 	fp := false // один раз заполнить price
 	fd := false // один раз заполнить enddate
 
@@ -176,13 +188,15 @@ func (xp *Parser) ParseXML(fname string) error {
 				if fp {
 					continue
 				}
-				err = xp.decoder.DecodeElement(&obPrc.Cost, &tc)
+				// err = xp.decoder.DecodeElement(&obPrc.Cost, &tc)
+				err = xp.decoder.DecodeElement(&mf, &tc)
 				if err != nil {
 					zap.S().Debugf("decoder.DecodeElement pricerur error: %v\n", err)
 				} else {
 					fp = true
 				}
-				zap.S().Debugf("Price: %v\n", obPrc)
+				obPrc.Cost = int64(mf * 100.0)
+				zap.S().Debugf("Price: %v\n", obPrc.Cost)
 
 			case strings.HasPrefix(tcname, "enddate"):
 				if fd {
@@ -197,15 +211,17 @@ func (xp *Parser) ParseXML(fname string) error {
 			}
 		}
 	}
+
 	if err != io.EOF && err != nil {
 		zap.S().Debugf("разбор XML завершился с ошибкой: %v\n", err)
 		return err
 	}
+
 	for _, x := range obPay {
 		x.CreditorID = splr.ID
 		x.DebtorID = csmr.ID
 		x.OriginID = orn.ID
-		xp.repo.CreateObligation(x)
+		xp.repo.CreateObligation(xp.tkn, x)
 	}
 
 	// TODO перенести в конец
@@ -215,11 +231,12 @@ func (xp *Parser) ParseXML(fname string) error {
 
 	zap.S().Debugf("информация о долге, полученная из Price: %v\n", obPrc)
 
+	// ЧТО ЭТО?
 	if len(obPay) > 0 {
 		return nil
 	}
 
-	xp.repo.CreateObligation(obPrc)
+	xp.repo.CreateObligation(xp.tkn, obPrc)
 
 	return nil
 }

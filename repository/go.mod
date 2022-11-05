@@ -3,12 +3,14 @@ module github.com/b2b2b-pro/prototype/repository
 go 1.18
 
 require (
-	github.com/b2b2b-pro/lib v0.0.6
+	github.com/b2b2b-pro/lib v0.0.10
+	github.com/go-chi/oauth v0.0.0-20210913085627-d937e221b3ef
 	github.com/jackc/pgx/v4 v4.17.2
 	go.uber.org/zap v1.23.0
 )
 
 require (
+	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect

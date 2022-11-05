@@ -3,7 +3,7 @@ module github.com/b2b2b-pro/prototype/xml2repo
 go 1.18
 
 require (
-	github.com/b2b2b-pro/lib v0.0.6
+	github.com/b2b2b-pro/lib v0.0.10
 	go.uber.org/zap v1.23.0
 )
 
